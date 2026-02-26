@@ -692,12 +692,11 @@ def painel():
         total_proximas=total_proximas
     )
 
-
- @main.route("/criar-admin")
+    @main.route("/criar-admin")
 def criar_admin():
     from app import db
     from app.models import Usuario
-    
+
     if Usuario.query.filter_by(usuario="admin").first():
         return "Admin já existe."
 
@@ -707,12 +706,16 @@ def criar_admin():
         admin=True
     )
     novo.set_senha("123456")
-    
+
     db.session.add(novo)
     db.session.commit()
 
     return "Admin criado com sucesso."
 
-@main.route("/teste")
+    @main.route("/teste")
 def teste():
     return "funcionando"
+
+
+
+ 
