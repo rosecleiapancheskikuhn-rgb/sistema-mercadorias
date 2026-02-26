@@ -692,26 +692,3 @@ def painel():
         total_proximas=total_proximas
     )
 
-# =========================
-# ROTA TEMPORÁRIA CRIAR ADMIN
-# =========================
-
-@main.route("/criar-admin")
-def criar_admin():
-    from app import db
-    from app.models import Usuario
-
-    if Usuario.query.filter_by(usuario="admin").first():
-        return "Admin já existe."
-
-    novo = Usuario(
-        nome="Administrador",
-        usuario="admin",
-        admin=True
-    )
-    novo.set_senha("123456")
-
-    db.session.add(novo)
-    db.session.commit()
-
-    return "Admin criado com sucesso."
