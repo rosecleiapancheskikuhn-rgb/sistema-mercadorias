@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Usuário{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-bottom:30px;">Editar Usuário</h2>
+
+<div class="card-dark" style="max-width:500px;">
+
+    <form method="POST">
+
+        <label>Nome Completo</label><br>
+        <input type="text" name="nome" value="{{ usuario.nome }}" required style="width:100%; margin-bottom:15px;"><br>
+
+        <label>Login</label><br>
+        <input type="text" name="usuario" value="{{ usuario.usuario }}" required style="width:100%; margin-bottom:15px;"><br>
+
+        <label>Nova Senha (deixe em branco para manter)</label><br>
+        <input type="password" name="senha" style="width:100%; margin-bottom:15px;"><br>
+
+        <div style="margin-bottom:20px;">
+            <label>
+                <input type="checkbox" name="admin" {% if usuario.admin %}checked{% endif %}>
+                Administrador
+            </label>
+        </div>
+
+        <button class="btn" type="submit">Salvar Alterações</button>
+
+        <a class="btn" style="background:#334155; margin-left:10px;"
+           href="{{ url_for('main.listar_usuarios') }}">
+           Cancelar
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

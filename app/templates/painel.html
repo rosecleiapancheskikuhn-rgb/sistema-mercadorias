@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Painel Logístico Executivo</title>
+
+<meta http-equiv="refresh" content="30">
+
+<style>
+
+/* =========================
+   BASE
+========================= */
+
+body {
+    margin:0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(to bottom, #eef2f7, #e3e9f2);
+    color:#111827;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    background:#1e3a8a;
+    color:white;
+    padding:25px 60px;
+    font-size:26px;
+    font-weight:600;
+    letter-spacing:1px;
+}
+
+/* =========================
+   INDICADORES
+========================= */
+
+.indicadores {
+    display:flex;
+    gap:30px;
+    padding:30px 60px;
+}
+
+.ind-card {
+    flex:1;
+    background:white;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    text-align:center;
+}
+
+.ind-card h3 {
+    font-size:14px;
+    color:#6b7280;
+    margin-bottom:10px;
+}
+
+.ind-card span {
+    font-size:40px;
+    font-weight:700;
+}
+
+.ind-normal span { color:#1d4ed8; }
+.ind-proxima span { color:#ea580c; }
+.ind-problema span { color:#dc2626; }
+
+/* =========================
+   CARD PRINCIPAL
+========================= */
+
+.destaque {
+    margin:10px 60px 30px 60px;
+    background:white;
+    border-radius:18px;
+    padding:35px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* 🔴 ATRASADA */
+.destaque.atrasada {
+    border:4px solid #dc2626;
+    background:#fff1f2;
+}
+
+/* 🟠 PROBLEMA */
+.destaque.problema {
+    border:4px solid #f97316;
+}
+
+.nf-titulo {
+    font-size:44px;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.info-grid {
+    display:flex;
+    justify-content:space-between;
+    font-size:18px;
+    margin-bottom:35px;
+}
+
+/* =========================
+   LINHA DE PROGRESSO
+========================= */
+
+.progress-container {
+    margin-top:20px;
+}
+
+.progress-bar {
+    position:relative;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.progress-line {
+    position:absolute;
+    top:50%;
+    left:0;
+    width:100%;
+    height:8px;
+    background:#cbd5e1;
+    border-radius:4px;
+    z-index:1;
+    overflow:hidden;
+}
+
+.progress-line::after {
+    content:"";
+    position:absolute;
+    width:30%;
+    height:100%;
+    background:linear-gradient(90deg, transparent, rgba(29,78,216,0.4), transparent);
+    animation: moveLine 3s linear infinite;
+}
+
+@keyframes moveLine {
+    0% { left:-30%; }
+    100% { left:100%; }
+}
+
+.progress-line-fill {
+    position:absolute;
+    top:50%;
+    left:0;
+    height:8px;
+    background:#1d4ed8;
+    border-radius:4px;
+    z-index:2;
+    transition:width 0.6s ease;
+}
+
+.step-wrapper {
+    z-index:3;
+    text-align:center;
+    width:110px;
+}
+
+.step {
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:#94a3b8;
+    margin:auto;
+}
+
+.step.done { background:#16a34a; }
+
+.step.active {
+    background:#1d4ed8;
+    transform:scale(1.4);
+    box-shadow:0 0 12px rgba(29,78,216,0.6);
+}
+
+.status-label {
+    margin-top:8px;
+    font-size:13px;
+}
+
+.truck {
+    animation: bounceTruck 1.5s ease-in-out infinite;
+}
+
+@keyframes bounceTruck {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+/* =========================
+   LISTA OPERACIONAL
+========================= */
+
+.fila-container {
+    margin:0 60px 40px 60px;
+    height:240px;
+    overflow:hidden;
+}
+
+.fila-scroll {
+    display:flex;
+    flex-direction:column;
+    animation: scrollVertical 30s linear infinite;
+}
+
+.card-linha {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:white;
+    padding:18px 30px;
+    margin-bottom:12px;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    font-size:16px;
+}
+
+/* 🔴 ATRASADA */
+.card-linha.atrasada {
+    border-left:8px solid #dc2626;
+    background:#fff1f2;
+}
+
+/* 🟠 PROBLEMA */
+.card-linha.problema {
+    border-left:8px solid #f97316;
+}
+
+.linha-nf { width:12%; font-weight:600; }
+.linha-empenho { width:12%; }
+.linha-destino { width:25%; }
+.linha-status { width:25%; font-weight:600; color:#1d4ed8; }
+.linha-previsao { width:15%; text-align:right; }
+
+@keyframes scrollVertical {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+}
+
+</style>
+
+<script>
+let indiceAtual = {{ notas.index(destaque) if destaque else 0 }};
+const totalCards = {{ notas|length }};
+
+function trocarCard(){
+    if(totalCards <= 1) return;
+    indiceAtual++;
+    if(indiceAtual >= totalCards) indiceAtual = 0;
+    window.location.href = "/painel?idx=" + indiceAtual;
+}
+setInterval(trocarCard,10000);
+</script>
+
+</head>
+<body>
+
+<div class="header">
+    PAINEL LOGÍSTICO OPERACIONAL
+</div>
+
+<div class="indicadores">
+    <div class="ind-card ind-normal">
+        <h3>EM ANDAMENTO</h3>
+        <span>{{ total_andamento }}</span>
+    </div>
+    <div class="ind-card ind-proxima">
+        <h3>PRÓXIMAS 48H</h3>
+        <span>{{ total_proximas }}</span>
+    </div>
+    <div class="ind-card ind-problema">
+        <h3>COM PROBLEMA</h3>
+        <span>{{ total_problemas }}</span>
+    </div>
+</div>
+
+{% if notas and destaque %}
+
+<div class="destaque
+    {% if destaque.atrasada %}atrasada
+    {% elif destaque.problema_aberto %}problema
+    {% endif %}
+">
+
+    <div class="nf-titulo">NF {{ destaque.nota.numero_nf }}</div>
+
+    <div class="info-grid">
+        <div><strong>Empenho:</strong> {{ destaque.nota.numero_empenho }}</div>
+        <div><strong>Destino:</strong> {{ destaque.nota.cidade_destino or '-' }} / {{ destaque.nota.estado_destino or '-' }}</div>
+        <div><strong>Transportadora:</strong> {{ destaque.nota.transportadora.nome }}</div>
+        <div><strong>Status:</strong> {{ destaque.status_atual or '-' }}</div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar">
+
+            <div class="progress-line"></div>
+
+            {% if destaque.indice_status >= 0 %}
+                <div class="progress-line-fill"
+                     style="width: calc(({{ destaque.indice_status }} / 5) * 100%);">
+                </div>
+            {% endif %}
+
+            {% set etapas = [
+                "Emitida",
+                "Recebida",
+                "Depósito",
+                "Transporte",
+                "Rota",
+                "Entregue"
+            ] %}
+
+            {% for status in etapas %}
+            <div class="step-wrapper">
+
+                {% if destaque.indice_status == loop.index0 %}
+                    <svg class="truck" width="26" height="26" viewBox="0 0 24 24" fill="#1d4ed8">
+                        <path d="M3 3h13v13H3V3zm14 4h4l2 3v6h-6V7zM5 5v9h9V5H5z"/>
+                    </svg>
+                {% else %}
+                    <div style="height:26px;"></div>
+                {% endif %}
+
+                <div class="step
+                    {% if destaque.indice_status == loop.index0 %}active
+                    {% elif destaque.indice_status > loop.index0 %}done
+                    {% endif %}
+                "></div>
+
+                {% if destaque.indice_status == loop.index0 %}
+                    <div class="status-label">{{ status }}</div>
+                {% endif %}
+
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+<div class="fila-container">
+    <div class="fila-scroll">
+
+        {% for item in notas %}
+        {% if item != destaque %}
+        <div class="card-linha
+            {% if item.atrasada %}atrasada
+            {% elif item.problema_aberto %}problema
+            {% endif %}
+        ">
+            
+            <div class="linha-nf">
+                NF {{ item.nota.numero_nf }}
+            </div>
+
+            <div class="linha-empenho">
+                {{ item.nota.numero_empenho or '-' }}
+            </div>
+
+            <div class="linha-destino">
+                {{ item.nota.cidade_destino or '-' }} / {{ item.nota.estado_destino or '-' }}
+            </div>
+
+            <div class="linha-status">
+                {{ item.status_atual or '-' }}
+            </div>
+
+            <div class="linha-previsao">
+                {% if item.nota.data_previsao_entrega %}
+                    {{ item.nota.data_previsao_entrega.strftime('%d/%m/%Y') }}
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+
+        </div>
+        {% endif %}
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endif %}
+
+</body>
+</html>

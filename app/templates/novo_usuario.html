@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Novo Usuário{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-bottom:30px;">Cadastrar Novo Usuário</h2>
+
+<div class="card-dark" style="max-width:500px;">
+
+    <form method="POST">
+
+        <label>Nome Completo</label><br>
+        <input type="text" name="nome" required style="width:100%; margin-bottom:15px;"><br>
+
+        <label>Login</label><br>
+        <input type="text" name="usuario" required style="width:100%; margin-bottom:15px;"><br>
+
+        <label>Senha</label><br>
+        <input type="password" name="senha" required style="width:100%; margin-bottom:15px;"><br>
+
+        <div style="margin-bottom:20px;">
+            <label>
+                <input type="checkbox" name="admin">
+                Tornar administrador
+            </label>
+        </div>
+
+        <button class="btn" type="submit">
+            Salvar Usuário
+        </button>
+
+        <a class="btn" style="background:#334155; margin-left:10px;"
+           href="{{ url_for('main.listar_usuarios') }}">
+           Cancelar
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

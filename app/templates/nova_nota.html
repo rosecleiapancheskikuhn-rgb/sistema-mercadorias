@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Nova Nota Fiscal{% endblock %}
+
+{% block content %}
+
+<h2>Cadastrar Nova Nota Fiscal</h2>
+
+<form method="POST" style="max-width:600px;">
+
+    <label>Número da Nota Fiscal</label>
+    <input type="text" name="numero_nf" required
+           style="width:100%; padding:8px; border-radius:6px; margin-bottom:15px;">
+
+    <label>Número da Nota de Empenho</label>
+    <input type="text" name="numero_empenho"
+           style="width:100%; padding:8px; border-radius:6px; margin-bottom:15px;">
+
+    <!-- 🔵 DESTINO -->
+    <div style="display:flex; gap:15px; margin-bottom:15px;">
+
+        <div style="flex:2;">
+            <label>Cidade Destino</label>
+            <input type="text" name="cidade_destino" required
+                   style="width:100%; padding:8px; border-radius:6px;">
+        </div>
+
+        <div style="flex:1;">
+            <label>UF</label>
+            <input type="text" name="estado_destino" maxlength="2" required
+                   style="width:100%; padding:8px; border-radius:6px;">
+        </div>
+
+    </div>
+
+    <label>Empresa</label>
+    <select name="empresa_id" required
+            style="width:100%; padding:8px; border-radius:6px; margin-bottom:15px;">
+        <option value="">Selecione</option>
+        {% for empresa in empresas %}
+            <option value="{{ empresa.id }}">{{ empresa.nome }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Transportadora</label>
+    <select name="transportadora_id" required
+            style="width:100%; padding:8px; border-radius:6px; margin-bottom:15px;">
+        <option value="">Selecione</option>
+        {% for transportadora in transportadoras %}
+            <option value="{{ transportadora.id }}">{{ transportadora.nome }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Valor Estimado do Frete (R$)</label>
+    <input type="text" name="valor_frete" placeholder="0,00"
+           style="width:100%; padding:8px; border-radius:6px; margin-bottom:15px;">
+
+    <label>Data Prevista de Entrega</label>
+    <input type="date" name="data_previsao"
+           style="width:100%; padding:8px; border-radius:6px; margin-bottom:20px;">
+
+    <button class="btn" type="submit">Salvar Nota Fiscal</button>
+    <a class="btn btn-secondary" href="{{ url_for('main.listar_notas') }}">Voltar</a>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Nova Transportadora{% endblock %}
+
+{% block content %}
+
+<h2>Cadastrar Nova Transportadora</h2>
+
+<form method="POST" style="max-width:400px;">
+
+    <label>Nome da Transportadora</label><br>
+    <input type="text" name="nome" required style="width:100%; padding:8px; border-radius:6px; margin-top:5px;"><br><br>
+
+    <button class="btn" type="submit">Salvar</button>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Transportadoras{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-bottom:25px;">Transportadoras Cadastradas</h2>
+
+<div style="margin-bottom:25px;">
+    <a class="btn" href="{{ url_for('main.nova_transportadora') }}">
+        + Nova Transportadora
+    </a>
+</div>
+
+{% if transportadoras %}
+    {% for transportadora in transportadoras %}
+        <div class="card">
+
+            <strong>{{ transportadora.nome }}</strong>
+
+            {% if not transportadora.ativa %}
+                <span style="color:#ef4444; margin-left:10px;">
+                    (Inativa)
+                </span>
+            {% endif %}
+
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Nenhuma transportadora cadastrada.</p>
+{% endif %}
+
+{% endblock %}

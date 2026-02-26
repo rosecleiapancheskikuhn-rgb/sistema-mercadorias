@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-bottom:30px;">Painel de Controle</h2>
+
+<div class="card-dark" style="margin-bottom:30px;">
+    <h3>Bem-vindo ao Sistema</h3>
+    <p>
+        Gerencie despachos, acompanhe entregas e controle empresas e transportadoras.
+    </p>
+</div>
+
+<div style="display:flex; gap:20px; flex-wrap:wrap;">
+
+    <!-- DESPACHOS -->
+    <div class="card-dark" style="flex:1; min-width:250px;">
+        <h3>🚚 Despachos</h3>
+        <p>Acompanhe entregas em andamento.</p>
+
+        <div style="margin-top:15px;">
+            <a class="btn" href="{{ url_for('main.listar_notas') }}">
+                Ver Despachos
+            </a>
+
+            <a class="btn"
+               style="background:#16a34a; margin-left:10px;"
+               href="{{ url_for('main.nova_nota') }}">
+               + Nova Nota
+            </a>
+        </div>
+    </div>
+
+    <!-- EMPRESAS -->
+    <div class="card-dark" style="flex:1; min-width:250px;">
+        <h3>🏢 Empresas</h3>
+        <p>Gerencie empresas cadastradas.</p>
+        <a class="btn" href="{{ url_for('main.listar_empresas') }}">Acessar</a>
+    </div>
+
+    <!-- TRANSPORTADORAS -->
+    <div class="card-dark" style="flex:1; min-width:250px;">
+        <h3>🚛 Transportadoras</h3>
+        <p>Controle transportadoras.</p>
+        <a class="btn" href="{{ url_for('main.listar_transportadoras') }}">Acessar</a>
+    </div>
+
+</div>
+
+{% endblock %}

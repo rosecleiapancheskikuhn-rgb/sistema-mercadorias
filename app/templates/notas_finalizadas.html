@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Finalizadas{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-bottom:25px;">Despachos Finalizados</h2>
+
+{% if notas %}
+    {% for nota in notas %}
+        <div class="card" style="border-left:6px solid #16a34a;">
+
+            <h3>NF {{ nota.numero_nf }}</h3>
+
+            <p>
+                <strong>Empresa:</strong> {{ nota.empresa.nome }}<br>
+                <strong>Transportadora:</strong> {{ nota.transportadora.nome }}
+            </p>
+
+            <a class="btn btn-secondary"
+               href="{{ url_for('main.detalhe_nota', nota_id=nota.id) }}">
+               Ver Detalhe
+            </a>
+
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Nenhuma nota finalizada.</p>
+{% endif %}
+
+{% endblock %}

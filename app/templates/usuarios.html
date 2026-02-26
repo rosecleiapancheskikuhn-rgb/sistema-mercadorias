@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Usuários{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-bottom:30px;">Gerenciamento de Usuários</h2>
+
+<div style="margin-bottom:25px;">
+    <a class="btn" href="{{ url_for('main.novo_usuario') }}">
+        + Novo Usuário
+    </a>
+</div>
+
+{% if usuarios %}
+
+    {% for usuario in usuarios %}
+        <div class="card-dark">
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+
+        <div>
+            <strong>{{ usuario.nome }}</strong><br>
+            <small style="color:#94a3b8;">
+                Login: {{ usuario.usuario }}
+            </small>
+        </div>
+
+        <div>
+            {% if usuario.admin %}
+                <span style="background:#065f46; padding:6px 12px; border-radius:20px; font-size:12px;">
+                    ADMIN
+                </span>
+            {% else %}
+                <span style="background:#334155; padding:6px 12px; border-radius:20px; font-size:12px;">
+                    Usuário
+                </span>
+            {% endif %}
+
+            <a class="btn" style="margin-left:15px;"
+               href="{{ url_for('main.editar_usuario', usuario_id=usuario.id) }}">
+               Editar
+            </a>
+
+            {% if usuario.id != current_user.id %}
+            <form method="POST"
+                  action="{{ url_for('main.excluir_usuario', usuario_id=usuario.id) }}"
+                  style="display:inline;">
+                <button class="btn" style="background:#dc2626;">
+                    Excluir
+                </button>
+            </form>
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+    {% endfor %}
+
+{% else %}
+    <p>Nenhum usuário cadastrado.</p>
+{% endif %}
+
+{% endblock %}

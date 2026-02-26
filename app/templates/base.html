@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}Sistema{% endblock %}</title>
+
+<style>
+
+body {
+    margin:0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background:#0f172a;
+    color:#e2e8f0;
+    display:flex;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width:240px;
+    background:#111827;
+    height:100vh;
+    padding:25px 20px;
+    position:fixed;
+    left:0;
+    top:0;
+    box-shadow:4px 0 15px rgba(0,0,0,0.4);
+}
+
+.sidebar h2 {
+    font-size:18px;
+    margin-bottom:30px;
+}
+
+.sidebar a {
+    display:block;
+    color:#94a3b8;
+    text-decoration:none;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:8px;
+    transition:0.2s;
+}
+
+.sidebar a:hover {
+    background:#1e293b;
+    color:white;
+}
+
+/* ===== CONTEÚDO ===== */
+.main-content {
+    margin-left:240px;
+    width:100%;
+}
+
+.topbar {
+    background:#0f172a;
+    padding:20px 40px;
+    border-bottom:1px solid #1e293b;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.topbar h1 {
+    margin:0;
+    font-size:20px;
+}
+
+.container {
+    padding:40px;
+}
+
+/* ===== BOTÕES ===== */
+.btn {
+    background:#2563eb;
+    color:white;
+    padding:8px 16px;
+    border:none;
+    border-radius:8px;
+    text-decoration:none;
+    cursor:pointer;
+    transition:0.2s;
+    font-size:14px;
+}
+
+.btn:hover {
+    background:#1d4ed8;
+}
+
+.card-dark {
+    background:#1e293b;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.3);
+}
+
+.logout-link {
+    color:#f87171 !important;
+    margin-top:20px;
+}
+
+.logout-link:hover {
+    background:#3f1d1d !important;
+}
+
+</style>
+</head>
+
+<body>
+
+{% if current_user.is_authenticated %}
+
+<div class="sidebar">
+    <h2>📦 Sistema</h2>
+
+    <a href="{{ url_for('main.home') }}">Dashboard</a>
+    <a href="{{ url_for('main.painel') }}" target="_blank" style="color:#38bdf8;">
+    📺 Painel Logístico
+    </a>
+    <a href="{{ url_for('main.listar_notas') }}">Andamento</a>
+    <a href="{{ url_for('main.listar_notas_finalizadas') }}">Finalizadas</a>
+    <a href="{{ url_for('main.listar_empresas') }}">Empresas</a>
+    <a href="{{ url_for('main.listar_transportadoras') }}">Transportadoras</a>
+    {% if current_user.admin %}
+    <a href="{{ url_for('main.listar_usuarios') }}">
+        👤 Usuários
+    </a>
+{% endif %}
+
+    <a href="{{ url_for('main.logout') }}" class="logout-link">
+        🚪 Sair
+    </a>
+</div>
+
+<div class="main-content">
+
+    <div class="topbar">
+        <h1>Sistema de Mercadorias</h1>
+        <div>👤 {{ current_user.nome }}</div>
+    </div>
+
+{% endif %}
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+{% if current_user.is_authenticated %}
+</div>
+{% endif %}
+
+</body>
+</html>

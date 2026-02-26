@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Empresas{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-bottom:25px;">Empresas Cadastradas</h2>
+
+<div style="margin-bottom:25px;">
+    <a class="btn" href="{{ url_for('main.nova_empresa') }}">
+        + Nova Empresa
+    </a>
+</div>
+
+{% if empresas %}
+    {% for empresa in empresas %}
+        <div class="card">
+
+            <strong>{{ empresa.nome }}</strong>
+
+            {% if not empresa.ativa %}
+                <span style="color:#ef4444; margin-left:10px;">
+                    (Inativa)
+                </span>
+            {% endif %}
+
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Nenhuma empresa cadastrada.</p>
+{% endif %}
+
+{% endblock %}

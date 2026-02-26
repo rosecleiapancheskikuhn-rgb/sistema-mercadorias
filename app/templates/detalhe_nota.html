@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhe{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-bottom:25px;">Detalhes da Nota Fiscal</h2>
+
+<div class="card-dark">
+
+    <p><strong>NF:</strong> {{ nota.numero_nf }}</p>
+
+    {% if nota.numero_empenho %}
+    <p><strong>Empenho:</strong> {{ nota.numero_empenho }}</p>
+    {% endif %}
+
+    <p><strong>Destino:</strong> {{ nota.cidade_destino or '-' }} / {{ nota.estado_destino or '-' }}</p>
+
+    <p><strong>Empresa:</strong> {{ nota.empresa.nome }}</p>
+    <p><strong>Transportadora:</strong> {{ nota.transportadora.nome }}</p>
+
+    <p><strong>Status Atual:</strong> 
+        {{ status_atual or "Não definido" }}
+
+        {% if problema_ativo %}
+            <span style="color:#ef4444; font-weight:bold;">
+                ⚠️ Com Problema
+            </span>
+        {% endif %}
+    </p>
+
+</div>
+
+
+<!-- 🔵 BOTÃO AVANÇAR STATUS -->
+{% if proximo_status and status_atual != "Entregue" %}
+<div style="margin-top:20px;">
+    <form method="POST"
+          action="{{ url_for('main.avancar_status', nota_id=nota.id) }}">
+        <button class="btn">
+            Avançar para: {{ proximo_status }}
+        </button>
+    </form>
+</div>
+{% endif %}
+
+{% if historicos and historicos[0].status == "Problema" %}
+<div style="margin-top:15px;">
+    <form method="POST"
+          action="{{ url_for('main.resolver_problema', nota_id=nota.id) }}">
+        <button class="btn btn-success">
+            Resolver Problema
+        </button>
+    </form>
+</div>
+{% endif %}
+
+<h3 style="margin-top:35px;">Histórico</h3>
+
+{% if historicos %}
+    {% for h in historicos %}
+        <div class="card-dark">
+
+            <strong>
+                {% if h.status == "Problema" %}
+                    <span style="color:#ef4444;">⚠️ Problema Registrado</span>
+                {% else %}
+                    {{ h.status }}
+                {% endif %}
+            </strong><br>
+
+            <small style="color:#94a3b8;">
+                {{ h.data_atualizacao.strftime('%d/%m/%Y %H:%M') }}
+            </small>
+
+            {% if h.observacao %}
+                <p style="margin-top:10px;">{{ h.observacao }}</p>
+            {% endif %}
+
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Nenhum histórico registrado.</p>
+{% endif %}
+
+
+<h3 style="margin-top:40px;">Registrar Problema</h3>
+
+<form method="POST"
+      action="{{ url_for('main.registrar_problema', nota_id=nota.id) }}"
+      style="max-width:500px;">
+
+    <textarea name="observacao"
+              rows="4"
+              style="width:100%;"
+              placeholder="Descreva o problema..."></textarea><br><br>
+
+    <button class="btn" type="submit">
+        Registrar Problema
+    </button>
+
+</form>
+
+{% endblock %}
