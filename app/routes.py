@@ -692,7 +692,11 @@ def painel():
         total_proximas=total_proximas
     )
 
-    @main.route("/criar-admin")
+# =========================
+# ROTA TEMPORÁRIA CRIAR ADMIN
+# =========================
+
+@main.route("/criar-admin")
 def criar_admin():
     from app import db
     from app.models import Usuario
@@ -711,11 +715,3 @@ def criar_admin():
     db.session.commit()
 
     return "Admin criado com sucesso."
-
-    @main.route("/teste")
-def teste():
-    return "funcionando"
-
-
-
- 
